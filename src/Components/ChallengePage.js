@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 
-
-
 export default class Challenge extends Component {
     state = {
-        selectedOption: 'email'
+        selectedOption: 'phoneNumber'
     }
     handleOptionChange = (changeEvent) =>{
         this.setState({
@@ -22,18 +20,18 @@ export default class Challenge extends Component {
             
             <div className="ChallengeForm">
             <form>
-                <p>inside the challenge page</p>
-
+                <p>Welcome, {this.props.person.userName} </p>
+                <p>Please choose one of the below option to authenticate your account !! {this.props.person.email} !!</p>
             <label>
             <input type="radio" id= "email" value="email" onChange={this.handleOptionChange} 
             checked={this.state.selectedOption==='email'} />
-            abcd@email.com
+            {this.props.person.email}
            </label>
 
            <label>
             <input type="radio" id= "phoneNumber" value="phoneNumber" onChange={this.handleOptionChange} 
             checked={this.state.selectedOption==='phoneNumber'} />
-            520-272-9905
+            {this.props.person.phoneNumber}
            </label>
 
            <button type= "submit" id= "submitBtn" onClick={()=> this.sendChallenge(this.state.selectedOption)}>Send</button>
