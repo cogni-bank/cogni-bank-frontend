@@ -8,7 +8,7 @@
         $("#submit").click(function(){
           user=$("#user").val();
           pass=$("#password").val();
-          $.post("http://localhost:8081/login",{user: user,password: pass}, function(data){
+          $.post("http://localhost:8080/login",{user: user,password: pass}, function(data){
             if(data==='done')
               {
                 alert("login success");
@@ -20,7 +20,7 @@
   </head>
   <body>
     <h1>Hello people !</h1>
-	<form method="post" action="http://localhost:8081/emailOrPassword">
+	<form method="post" action="http://localhost:8080/loginUser">
     <input type="TEXT" name="user" size="40"><br>
     <input type="password" name="password" size="40"><br>
     <input type="submit" id="submit" value="Submit">

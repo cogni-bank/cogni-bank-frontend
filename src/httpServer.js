@@ -8,16 +8,23 @@ app.use(bodyParser.json());
 app.get('/',function(req,res){
   res.sendfile("index.html");
 });
-app.post('/user',function(req,res){
 
+app.post('/loginUser',function(req,res){
   var user_name=req.body.user;
   var password=req.body.password;
   console.log("User name = "+user_name+", password is "+password);
   console.log(req.path);
-  res.end("yes");
+  var user = {userId:'null', userName:'null', password:'null', email:'anilvarma@gmail.com', phone:'1408937230498', otpCode:'null'}
+  //res.write("user")
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json');
+  
+  res.write(JSON.stringify(user));
+  res.end();
+
 });
 
-app.post('/emailOrPassword',function(req,res){
+app.post('/emailOrPhone',function(req,res){
     var user_name=req.body.user;
     var password=req.body.password;
     console.log("User name = "+user_name+", password is "+password);
@@ -32,6 +39,6 @@ app.post('/emailOrPassword',function(req,res){
     console.log(req.path);
     res.end("yes");
   });
-app.listen(8081,function(){
-  console.log("Started on PORT 8081");
+app.listen(8080,function(){
+  console.log("Started on PORT 8080");
 })
