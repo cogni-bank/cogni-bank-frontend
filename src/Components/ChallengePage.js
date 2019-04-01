@@ -54,6 +54,7 @@ export default class Challenge extends Component {
       );
     } else if (this.state.currentView === "otpForm") {
       tmpView = <OtpForm />;
+      //tmpView = <OtpTimer/>;
     }
 
     return <div className="ChallengeForm">{tmpView}</div>;
