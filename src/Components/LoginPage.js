@@ -14,15 +14,23 @@ class Login extends Component {
     return (
       <div className="Login">
         <div className="LoginForm">
-        <form>
-            <label>Enter your User Name:</label>
-            <input type = "text" id = "userName" name ="userName" onChange={this.handleChange} /> <br/>
-            <label>Enter your password:</label>
-            <input type = "text" id = "password" name ="password" onChange= {this.handleChange}/> <br/>
-            <a href = "#" id = "forgotUser">Forgot User Name/ Password ?</a> 
-            <button type = "submit" id="loginBtn" name = "login" 
+        <form method='POST'>
+            <div>
+              <label>Enter your User Name:</label>
+            <input type = "text" id = "userName" name ="userName" onChange={this.handleChange} />
+            </div>
+            <div>
+              <label>Enter your password: &nbsp;&nbsp;</label>
+            
+            <input type = "text" id = "password" name ="password" onChange= {this.handleChange}/>
+            </div>
+            <div className="forUserAndSingIn">
+              <span className="forgotUser">
+                <a href = "/" id = "forgotUser">Forgot User Name/ Password ?</a>
+              </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button type = "button" id="loginBtn" name = "login" 
                 onClick ={()=> this.props.validaterUser(this.state)}>Login</button> 
-        
+            </div>
         </form>
         </div>
         <div className="signUp">

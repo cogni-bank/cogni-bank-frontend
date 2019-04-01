@@ -11,7 +11,7 @@ export default class Challenge extends Component {
       }
 
       sendChallenge = (selectedOption) =>{
-          console.log(selectedOption + " inside send challenge")
+          //console.log(selectedOption + " inside send challenge")
           //SendChallenge() should enable the challenge text box
         //onHandleChenge for text box should compare the auth code
       }
@@ -21,7 +21,7 @@ export default class Challenge extends Component {
             <div className="ChallengeForm">
             <form>
                 <p>Welcome, {this.props.person.userName} </p>
-                <p>Please choose one of the below option to authenticate your account !! {this.props.person.email} !!</p>
+                <p>Please choose one of the below option to authenticate your account</p>
             <label>
             <input type="radio" id= "email" value="email" onChange={this.handleOptionChange} 
             checked={this.state.selectedOption==='email'} />

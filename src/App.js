@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Login from './Components/LoginPage';
 import Challenge from './Components/ChallengePage';
@@ -26,10 +25,11 @@ export default  class App extends Component {
 
   //Works with the live api but have to test with mock server
   validaterUser = (person) => {
+    console.log("persone",person);
     let dataFromSecurity=null;
     const newState = JSON.parse(JSON.stringify(this.state));
     //send request to security to validate user 
-    const responseFromSecurity= fetch('http://localhost:8080/loginUser', {  
+     fetch('http://localhost:8080/loginUser', {  
       //http://10.61.141.211:8080/loginUser'
     method: 'POST',
       headers: {
@@ -44,20 +44,18 @@ export default  class App extends Component {
       }
   })
 }).then(res => res.json())
-  .then(response => {console.log('success',response);
+  .then(response => {
+                      console.log('success',response);
                       dataFromSecurity=response;
-                      console.log(dataFromSecurity.phone);})
+                      newState.person.phoneNumber = dataFromSecurity.phone;
+                      newState.person.email = dataFromSecurity.email
+                      newState.currentView = 'challengeView'
+                      newState.person.userName=person.userName
+                      console.log("My response from security ",newState.person);
+                      super.setState(newState); 
+                    })
                       
   .catch(error=>console.error('Error',error));
-  
-  
-  if (dataFromSecurity === null){
-      setTimeout(function() {console.log("My response from security"+dataFromSecurity)
-      newState.person.phoneNumber = dataFromSecurity.phone;
-      newState.person.email = dataFromSecurity.email
-      
-    }, 2000 );
-  }
 
   //once the user validated response Ok from security - send the user to challenge page 
     // will recieve phNum and email  // will call Challenge page  
@@ -65,11 +63,7 @@ export default  class App extends Component {
     
 
     //if the response is bad(non authentic user) - navigate to login page with retry message
-    console.log("Welcome to Cogni-bank" + person.userName);
-    console.log(person)
-    newState.currentView = 'challengeView'
-    newState.person.userName=person.userName
-    super.setState(newState); 
+    
     // ask SSO userEmail,phNum and auth code  
   }
 
