@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import Timer from "./Timer";
 
 export default class OtpForm extends Component {
-  handleChange = e => {
+  state = {
+    otpCode: ""
+  };
+
+  handleChangeOtpForm = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -57,9 +61,14 @@ export default class OtpForm extends Component {
     return (
       <div id="otpForm" style={this.divStyleForOTP}>
         {/* <Timer start={Date.now()} /> */}
-        <form>
+        <form onSubmit={() => this.props.sendOTP(this.state.otpCode)}>
           <label>Enter the code received </label>
-          <input type="text" id="otpCode" name="otpCode" />
+          <input
+            type="text"
+            id="otpCode"
+            name="otpCode"
+            onChange={this.handleChangeOtpForm}
+          />
           <button type="submit" id="submitOtp">
             Submit OTP{" "}
           </button>

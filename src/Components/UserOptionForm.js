@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 
 export default class UserOptionForm extends Component {
-  //   handleOptionChange = changeEvent => {
-  //     super.setState({
-  //       selectedOption: changeEvent.target.value
-  //     });
-  //   };
-
   render() {
     return (
       <div id="userOptionForm">

@@ -5,7 +5,7 @@ import OtpForm from "./OtpForm";
 export default class Challenge extends Component {
   state = {
     selectedOption: "email",
-    currentView: "userOptionForm"
+    challengeCurrentView: "userOptionForm"
   };
 
   handleOptionChange = changeEvent => {
@@ -14,8 +14,9 @@ export default class Challenge extends Component {
     });
   };
 
+  /*Passing the notification slection type to the Security team
+   */
   sendChallenge = selectedOption => {
-    console.log("selectedOption", selectedOption);
     const newState = JSON.parse(JSON.stringify(this.state));
 
     //send request to security to validate user
@@ -26,24 +27,50 @@ export default class Challenge extends Component {
         "Content-Type": "application/json;charset=utf-8"
       },
       body: JSON.stringify({
-        userChoice: {
+        User: {
           optionType: selectedOption,
           value:
             "email" === selectedOption ? this.props.email : this.props.phone,
-          userName: this.props.userName
+          userId: this.props.userId
         }
       })
     })
       .then(() => {
-        newState.currentView = "otpForm";
+        newState.challengeCurrentView = "otpForm";
         super.setState(newState);
+        console.log("The response sending to security", this.props.person);
+      })
+      .catch(error => console.error("Error", error));
+  };
+
+  sendOTP = otpCode => {
+    //send request to security to validate user
+    fetch("http://localhost:8080/validateUserWithOTP", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json;charset=utf-8"
+      },
+      body: JSON.stringify({
+        User: {
+          otpCode: otpCode,
+          userId: this.props.userId
+        }
+      })
+    })
+      .then(() => {
+        this.props.switchView("accountView");
+        //newState.currentView = "accountView";
+        //super.setState(newState);
+        //console.log("State from the challenge page", newState);
+        console.log("App page current View", this.props.currentView);
       })
       .catch(error => console.error("Error", error));
   };
 
   render() {
     let tmpView = <UserOptionForm sendChallenge={this.sendChallenge} />;
-    if (this.state.currentView === "userOptionForm") {
+    if (this.state.challengeCurrentView === "userOptionForm") {
       tmpView = (
         <UserOptionForm
           sendChallenge={this.sendChallenge}
@@ -52,11 +79,12 @@ export default class Challenge extends Component {
           handleOptionChange={this.handleOptionChange}
         />
       );
-    } else if (this.state.currentView === "otpForm") {
+    } else if (this.state.challengeCurrentView === "otpForm") {
       tmpView = <OtpForm />;
       //tmpView = <OtpTimer/>;
     }
-
+    //console.log("State from the challenge page", newState);
+    console.log("App page current View", this.props.currentView);
     return <div className="ChallengeForm">{tmpView}</div>;
   }
 }

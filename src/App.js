@@ -2,67 +2,63 @@ import React, { Component } from "react";
 import "./App.css";
 import Login from "./Components/LoginPage";
 import Challenge from "./Components/ChallengePage";
+import AccountDetails from "./Components/AccountDetailspage";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      person: { userName: "", phone: "", email: "" },
+      person: { userId: "", userName: "", phone: "", email: "" },
       currentView: "loginView"
     };
   }
 
-  // switchView  = () =>{
-  //   const newState = JSON.parse(JSON.stringify(this.state));
-  //   newState.selectedPerson = person
-  //   newState.selectedView = 'PersonEdit';
-  //   super.setState(newState);
-  // }
+  switchView = view => {
+    const newState = JSON.parse(JSON.stringify(this.state));
+    newState.currentView = view;
+    super.setState(newState);
+  };
 
-  //Works with the live api but have to test with mock server
+  /**
+   *  this function passes the user details to the security team to validate the user.
+   * Security team then pass the phone Number and email
+   * */
   validaterUser = person => {
     console.log("persone", person);
-    let dataFromSecurity = null;
+    //let dataFromSecurity = null;
     const newState = JSON.parse(JSON.stringify(this.state));
     //send request to security to validate user
     fetch("http://localhost:8080/loginUser", {
-      //'http://localhost:8080/loginUser', {
-      //http://10.61.141.211:8080/loginUser'
-      //mode:'no-cors',
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json;charset=utf-8"
       },
       body: JSON.stringify({
-        user: {
+        User: {
           userName: person.userName,
           password: person.password
         }
       })
     })
       .then(res => {
-        console.log("my first response", res);
+        // console.log("my first response", res);
         return res.json();
       })
       .then(response => {
         console.log("The response", response);
-        dataFromSecurity = response;
-        newState.person.phone = dataFromSecurity.phone;
-        newState.person.email = dataFromSecurity.email;
+        newState.person.userId = response.userId;
+        newState.person.phone = response.phone;
+        newState.person.email = response.email;
         newState.currentView = "challengeView";
         newState.person.userName = person.userName;
-        console.log("My response from security ", newState.person);
         super.setState(newState);
       })
 
       .catch(error => console.error("Error", error));
 
-    //if the response is bad(non authentic user) - navigate to login page with retry message
+    //Need to Complete later: if the response is bad(non authentic user) - navigate to login page with retry message
   };
-
-  // this will take parameter from the challenge page and pass it to security
-  // sendEmailOrPhNum()
 
   render() {
     let tmpView = <Login validaterUser={this.validaterUser} />;
@@ -71,16 +67,17 @@ export default class App extends Component {
         tmpView = <Login validaterUser={this.validaterUser} />;
         break;
       case "challengeView":
-        tmpView = <Challenge person={this.state.person} />;
-        //challenge will take phNo, email as parameters
+        tmpView = (
+          <Challenge
+            currentView={this.state.currentView}
+            person={this.state.person}
+            switchView={this.switchView}
+          />
+        );
         break;
-      // case act.Update:
-      //     tmpView = <PersonUpdate info={this.state} switch={this.changeView} />
-      //     break;
-      // case act.Delete:
-      //     tmpView = <PersonDelete info={this.state} switch={this.changeView} />
-      //     break;
-      // case act.ViewAll:
+      case "accountView":
+        tmpView = <AccountDetails />;
+        break;
       default:
         tmpView = <Login validaterUser={this.validaterUser} />;
         break;
