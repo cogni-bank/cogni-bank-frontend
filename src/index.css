@@ -12,14 +12,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-div#root{
+div#root {
   padding-top: 10%;
   text-align: center;
 }
-span.forgotUser{
+
+span.forgotUser {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 10px;
 }
-div.signUp{
+div.signUp {
   padding-top: 2%;
 }

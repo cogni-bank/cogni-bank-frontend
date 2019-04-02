@@ -14,8 +14,10 @@ export default class App extends Component {
   }
 
   switchView = view => {
-    const newState = JSON.parse(JSON.stringify(this.state));
+    const newState = { ...this.state };
     newState.currentView = view;
+    console.log("setting new state in app");
+    console.log(newState);
     super.setState(newState);
   };
 
@@ -76,12 +78,18 @@ export default class App extends Component {
         );
         break;
       case "accountView":
-        tmpView = <AccountDetails />;
+        tmpView = <AccountDetails person={this.state.person} />;
         break;
+
       default:
         tmpView = <Login validaterUser={this.validaterUser} />;
         break;
     }
-    return <div className="Main">{tmpView}</div>;
+    return (
+      <div className="Main">
+        <h1>Cogni-Bank</h1>
+        {tmpView}
+      </div>
+    );
   }
 }

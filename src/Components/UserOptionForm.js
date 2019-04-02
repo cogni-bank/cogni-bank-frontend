@@ -5,7 +5,7 @@ export default class UserOptionForm extends Component {
     return (
       <div id="userOptionForm">
         <form>
-          <p>Welcome, {this.props.person.userName} </p>
+          <p>Welcome {this.props.person.userName} ,</p>
           <p>
             Please choose one of the below option to authenticate your account
           </p>

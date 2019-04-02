@@ -42,7 +42,9 @@ export default class Challenge extends Component {
       })
       .catch(error => console.error("Error", error));
   };
-
+  /* Send the user enterd otp to security team ,and 
+    ,check the response string and switch the page based on that
+   */
   sendOTP = otpCode => {
     //send request to security to validate user
     fetch("http://localhost:8080/validateUserWithOTP", {
@@ -60,12 +62,11 @@ export default class Challenge extends Component {
     })
       .then(() => {
         this.props.switchView("accountView");
-        //newState.currentView = "accountView";
-        //super.setState(newState);
-        //console.log("State from the challenge page", newState);
-        console.log("App page current View", this.props.currentView);
+        console.log("AccountView methodd d....");
       })
       .catch(error => console.error("Error", error));
+    //this.props.switchView("accountView");
+    console.log(otpCode);
   };
 
   render() {
@@ -80,10 +81,10 @@ export default class Challenge extends Component {
         />
       );
     } else if (this.state.challengeCurrentView === "otpForm") {
-      tmpView = <OtpForm />;
+      tmpView = <OtpForm sendOTP={this.sendOTP} />;
       //tmpView = <OtpTimer/>;
     }
-    //console.log("State from the challenge page", newState);
+
     console.log("App page current View", this.props.currentView);
     return <div className="ChallengeForm">{tmpView}</div>;
   }
