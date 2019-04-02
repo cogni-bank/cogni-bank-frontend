@@ -13,6 +13,7 @@ export default class App extends Component {
     };
   }
 
+  /*Takes a view and Changes the currentView in the state */
   switchView = view => {
     const newState = { ...this.state };
     newState.currentView = view;
@@ -68,6 +69,7 @@ export default class App extends Component {
       case "loginView":
         tmpView = <Login validaterUser={this.validaterUser} />;
         break;
+
       case "challengeView":
         tmpView = (
           <Challenge
@@ -77,6 +79,7 @@ export default class App extends Component {
           />
         );
         break;
+
       case "accountView":
         tmpView = <AccountDetails person={this.state.person} />;
         break;

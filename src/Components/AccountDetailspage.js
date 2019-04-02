@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+/*Will be called once success Otp validation   */
 export default class AccountDetails extends Component {
   state = {};
 

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+/*Child component of ChallengePage  */
 export default class UserOptionForm extends Component {
   render() {
     return (

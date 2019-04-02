@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class OtpForm extends Component {
   state = {
-    elapsed: 0,
+    elapsed: 5000,
     start: Date.now(),
     otpCode: ""
   };
@@ -21,7 +21,7 @@ export default class OtpForm extends Component {
      has been rendered on the page. We can set the interval here:*/
   componentDidMount() {
     this.timer = setInterval(this.tick, 500, this);
-    this.timer = setTimeout(() => {
+    this.timer2 = setTimeout(() => {
       console.log("inside timeout");
       this.props.timeHandleChange();
     }, 5000);
@@ -36,18 +36,15 @@ export default class OtpForm extends Component {
   tick(timerSelf) {
     timerSelf.doTick();
   }
+
   doTick() {
-    const newState = JSON.parse(JSON.stringify(this.state));
-    newState.elapsed = new Date() - this.state.start;
-    this.setState({ elapsed: new Date() - this.state.start });
+    this.setState({ elapsed: 5000 - (new Date() - this.state.start) });
   }
 
   render() {
     let elapsed = Math.round(this.state.elapsed / 100);
-
-    // This will give a number with one digit after the decimal dot (xx.x):
-
     let seconds = (elapsed / 10).toFixed(1);
+
     return (
       <div id="otpForm">
         <p>

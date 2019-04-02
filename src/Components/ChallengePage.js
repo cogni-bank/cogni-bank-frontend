@@ -2,24 +2,31 @@ import React, { Component } from "react";
 import UserOptionForm from "./UserOptionForm";
 import OtpForm from "./OtpForm";
 
+/*Challenge page has UserOPtionForm and  OtpForm as child components */
 export default class Challenge extends Component {
   state = {
     selectedOption: "email",
     challengeCurrentView: "userOptionForm"
   };
 
+  /*This function is called with respect to radio button handling in the userOption page */
   handleOptionChange = changeEvent => {
     this.setState({
       selectedOption: changeEvent.target.value
     });
   };
 
-  /*Passing the notification slection type to the Security team
-   */
+  /*This function, changes the view from OtpForm to loginView after timeout  */
+  timeHandleChange = () => {
+    console.log("inside handle");
+    this.props.switchView("loginView");
+  };
+
+  /*Passing the user notification option type to the Security team, 
+  will proceed based on the security team response */
   sendChallenge = selectedOption => {
     const newState = JSON.parse(JSON.stringify(this.state));
 
-    //send request to security to validate user
     fetch("http://localhost:8080/receivingEmailOrPhoneFromUI", {
       method: "POST",
       headers: {
@@ -41,11 +48,6 @@ export default class Challenge extends Component {
         console.log("The response sending to security", this.props.person);
       })
       .catch(error => console.error("Error", error));
-  };
-
-  timeHandleChange = () => {
-    console.log("inside handle");
-    this.props.switchView("loginView");
   };
 
   /* Send the user enterd otp to security team ,and 
@@ -71,8 +73,6 @@ export default class Challenge extends Component {
         console.log("AccountView methodd d....");
       })
       .catch(error => console.error("Error", error));
-    //this.props.switchView("accountView");
-    console.log(otpCode);
   };
 
   render() {
@@ -95,7 +95,6 @@ export default class Challenge extends Component {
       );
     }
 
-    console.log("App page current View", this.props.currentView);
     return <div className="ChallengeForm">{tmpView}</div>;
   }
 }
