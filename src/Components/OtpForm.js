@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import Timer from "./Timer";
 
 export default class OtpForm extends Component {
   state = {
+    elapsed: 0,
+    start: Date.now(),
     otpCode: ""
   };
 
@@ -10,12 +11,52 @@ export default class OtpForm extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  /* This is called before our render function. The object that is
+    returned is assigned to this.state, so we can use it later.*/
+  getInitialState() {
+    return { elapsed: 0 };
+  }
+
+  /* componentDidMount is called by react when the component
+     has been rendered on the page. We can set the interval here:*/
+  componentDidMount() {
+    this.timer = setInterval(this.tick, 500, this);
+    this.timer = setTimeout(() => {
+      console.log("inside timeout");
+      this.props.timeHandleChange();
+    }, 5000);
+  }
+
+  /* This method is called immediately before the component is removed
+     from the page and destroyed. We can clear the interval here:*/
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  tick(timerSelf) {
+    timerSelf.doTick();
+  }
+  doTick() {
+    const newState = JSON.parse(JSON.stringify(this.state));
+    newState.elapsed = new Date() - this.state.start;
+    this.setState({ elapsed: new Date() - this.state.start });
+  }
+
   render() {
+    let elapsed = Math.round(this.state.elapsed / 100);
+
+    // This will give a number with one digit after the decimal dot (xx.x):
+
+    let seconds = (elapsed / 10).toFixed(1);
     return (
       <div id="otpForm">
-        {/* <Timer start={Date.now()} /> */}
+        <p>
+          This example was started <b>{seconds} seconds</b> ago.
+        </p>
         <form method="POST">
-          <label>Enter the code received </label>
+          <label>
+            We've sent you verfication code, please enter to proceed{" "}
+          </label>
           <input
             type="text"
             id="otpCode"

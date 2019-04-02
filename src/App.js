@@ -27,8 +27,8 @@ export default class App extends Component {
    * */
   validaterUser = person => {
     console.log("persone", person);
-    //let dataFromSecurity = null;
     const newState = JSON.parse(JSON.stringify(this.state));
+
     //send request to security to validate user
     fetch("http://localhost:8080/loginUser", {
       method: "POST",
@@ -44,7 +44,6 @@ export default class App extends Component {
       })
     })
       .then(res => {
-        // console.log("my first response", res);
         return res.json();
       })
       .then(response => {
@@ -52,8 +51,9 @@ export default class App extends Component {
         newState.person.userId = response.userId;
         newState.person.phone = response.phone;
         newState.person.email = response.email;
-        newState.currentView = "challengeView";
         newState.person.userName = person.userName;
+        newState.currentView = "challengeView";
+
         super.setState(newState);
       })
 

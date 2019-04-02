@@ -42,6 +42,12 @@ export default class Challenge extends Component {
       })
       .catch(error => console.error("Error", error));
   };
+
+  timeHandleChange = () => {
+    console.log("inside handle");
+    this.props.switchView("loginView");
+  };
+
   /* Send the user enterd otp to security team ,and 
     ,check the response string and switch the page based on that
    */
@@ -81,8 +87,12 @@ export default class Challenge extends Component {
         />
       );
     } else if (this.state.challengeCurrentView === "otpForm") {
-      tmpView = <OtpForm sendOTP={this.sendOTP} />;
-      //tmpView = <OtpTimer/>;
+      tmpView = (
+        <OtpForm
+          sendOTP={this.sendOTP}
+          timeHandleChange={this.timeHandleChange}
+        />
+      );
     }
 
     console.log("App page current View", this.props.currentView);
