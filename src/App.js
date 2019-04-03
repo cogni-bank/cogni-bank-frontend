@@ -44,20 +44,34 @@ export default class App extends Component {
     })
       .then(res => {
         console.log("The res", res);
-        return res.json();
+
+        if (res.ok) {
+          return res.json();
+        } else if (res.status === 401) {
+          throw new Error("User name or password is wrong!");
+        } else {
+          throw new Error("Unknown error happened!");
+        }
       })
       .then(response => {
         console.log("The response", response);
-        newState.person.userId = response.userId;
-        newState.person.phone = response.phone;
-        newState.person.email = response.email;
+
+        const { userId, phone, email } = response;
+        //const person = {userId, phone, email };
+
+        newState.person.userId = userId;
+        newState.person.phone = phone;
+        newState.person.email = email;
         newState.person.userName = person.userName;
         newState.currentView = "challengeView";
 
         super.setState(newState);
       })
+      .catch(error => {
+        console.log("Error --->>>", error);
 
-      .catch(error => console.error("Error", error));
+        super.setState({ error });
+      });
 
     //Need to Complete later: if the response is bad(non authentic user) - navigate to login page with retry message
   };
@@ -66,7 +80,9 @@ export default class App extends Component {
     let tmpView = <Login validaterUser={this.validaterUser} />;
     switch (this.state.currentView) {
       case "loginView":
-        tmpView = <Login validaterUser={this.validaterUser} />;
+        tmpView = (
+          <Login validaterUser={this.validaterUser} error={this.state.error} />
+        );
         break;
 
       case "challengeView":

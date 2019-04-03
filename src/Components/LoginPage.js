@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "../style/login.css";
 
 class Login extends Component {
   state = {
@@ -19,6 +20,9 @@ class Login extends Component {
   render() {
     return (
       <div className="Login">
+        <p className="loginError">
+          {this.props.error === undefined ? "" : this.props.error.message}
+        </p>
         <div className="LoginForm">
           <form onSubmit={this.handleLogin}>
             <div>

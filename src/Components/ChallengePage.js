@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import UserOptionForm from "./UserOptionForm";
 import OtpForm from "./OtpForm";
+import LogOut from "./LogOut";
 
 /*Challenge page has UserOPtionForm and  OtpForm as child components */
 export default class Challenge extends Component {
@@ -38,7 +39,8 @@ export default class Challenge extends Component {
         userId: this.props.person.userId
       })
     })
-      .then(() => {
+      .then(res => {
+        console.log("Challenge OTP ", res);
         newState.challengeCurrentView = "otpForm";
         super.setState(newState);
         console.log("The response sending to security", this.props.person);
@@ -58,15 +60,28 @@ export default class Challenge extends Component {
         "Content-Type": "application/json;charset=utf-8"
       },
       body: JSON.stringify({
-        otpCode: otpCode,
-        userId: this.props.pesron.userId
+        code: otpCode,
+        userId: this.props.person.userId
       })
     })
-      .then(() => {
-        this.props.switchView("accountView");
-        console.log("AccountView methodd d....");
+      .then(res => {
+        if (res.ok) {
+          console.log("Response Captured in sendOTP method", res);
+          return res;
+        } else if (res.status === 401) {
+          throw new Error("OTP Code is wrong");
+        } //else {
+        //   throw new Error("Unknown error happened!");
+        // }
       })
-      .catch(error => console.error("Error", error));
+      .then(response => {
+        this.props.switchView("accountView");
+        console.log("AccountView method.");
+      })
+      .catch(error => {
+        console.error("Error", error);
+        super.setState({ error });
+      });
   };
 
   render() {
@@ -85,10 +100,16 @@ export default class Challenge extends Component {
         <OtpForm
           sendOTP={this.sendOTP}
           timeHandleChange={this.timeHandleChange}
+          error={this.state.error}
         />
       );
     }
 
-    return <div className="ChallengeForm">{tmpView}</div>;
+    return (
+      <div className="ChallengeForm">
+        {tmpView}
+        <LogOut logOut={this.props.switchView} />
+      </div>
+    );
   }
 }

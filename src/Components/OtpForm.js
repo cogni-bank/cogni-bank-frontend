@@ -30,9 +30,11 @@ export default class OtpForm extends Component {
   /* This method is called immediately before the component is removed
      from the page and destroyed. We can clear the interval here:*/
   componentWillUnmount() {
-    console.log("inside componentunmount");
-    clearInterval(this.timer);
-    clearInterval(this.timer2);
+    if (this.props.error !== undefined) {
+      console.log("inside componentunmount");
+      clearInterval(this.timer);
+      clearInterval(this.timer2);
+    }
   }
 
   tick(timerSelf) {
@@ -44,6 +46,7 @@ export default class OtpForm extends Component {
   }
   otp() {
     this.componentWillUnmount();
+    console.log("after componentunmount");
     this.props.sendOTP(this.state.otpCode);
   }
 
@@ -53,6 +56,9 @@ export default class OtpForm extends Component {
 
     return (
       <div id="otpForm">
+        <p className="loginError">
+          {this.props.error === undefined ? "" : this.props.error.message}
+        </p>
         <p>
           This example was started <b>{seconds} seconds</b> ago.
         </p>
