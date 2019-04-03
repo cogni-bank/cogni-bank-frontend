@@ -27,19 +27,15 @@ export default class Challenge extends Component {
   sendChallenge = selectedOption => {
     const newState = JSON.parse(JSON.stringify(this.state));
 
-    fetch("http://localhost:8080/receivingEmailOrPhoneFromUI", {
+    fetch("http://localhost:8080/sendOtp", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json;charset=utf-8"
       },
       body: JSON.stringify({
-        User: {
-          optionType: selectedOption,
-          value:
-            "email" === selectedOption ? this.props.email : this.props.phone,
-          userId: this.props.userId
-        }
+        type: selectedOption,
+        userId: this.props.person.userId
       })
     })
       .then(() => {
@@ -62,10 +58,8 @@ export default class Challenge extends Component {
         "Content-Type": "application/json;charset=utf-8"
       },
       body: JSON.stringify({
-        User: {
-          otpCode: otpCode,
-          userId: this.props.userId
-        }
+        otpCode: otpCode,
+        userId: this.props.pesron.userId
       })
     })
       .then(() => {

@@ -38,13 +38,12 @@ export default class App extends Component {
         "Content-Type": "application/json;charset=utf-8"
       },
       body: JSON.stringify({
-        User: {
-          userName: person.userName,
-          password: person.password
-        }
+        userName: person.userName,
+        password: person.password
       })
     })
       .then(res => {
+        console.log("The res", res);
         return res.json();
       })
       .then(response => {

@@ -20,17 +20,19 @@ export default class OtpForm extends Component {
   /* componentDidMount is called by react when the component
      has been rendered on the page. We can set the interval here:*/
   componentDidMount() {
-    this.timer = setInterval(this.tick, 500, this);
+    this.timer = setInterval(this.tick, 1000, this);
     this.timer2 = setTimeout(() => {
       console.log("inside timeout");
       this.props.timeHandleChange();
-    }, 5000);
+    }, 500000);
   }
 
   /* This method is called immediately before the component is removed
      from the page and destroyed. We can clear the interval here:*/
   componentWillUnmount() {
+    console.log("inside componentunmount");
     clearInterval(this.timer);
+    clearInterval(this.timer2);
   }
 
   tick(timerSelf) {
@@ -38,7 +40,11 @@ export default class OtpForm extends Component {
   }
 
   doTick() {
-    this.setState({ elapsed: 5000 - (new Date() - this.state.start) });
+    this.setState({ elapsed: 500000 - (new Date() - this.state.start) });
+  }
+  otp() {
+    this.componentWillUnmount();
+    this.props.sendOTP(this.state.otpCode);
   }
 
   render() {
@@ -60,11 +66,7 @@ export default class OtpForm extends Component {
             name="otpCode"
             onChange={this.handleChangeOtpForm}
           />
-          <button
-            type="button"
-            id="submitOtp"
-            onClick={() => this.props.sendOTP(this.state.otpCode)}
-          >
+          <button type="button" id="submitOtp" onClick={() => this.otp()}>
             Submit OTP{" "}
           </button>
         </form>

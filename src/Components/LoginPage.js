@@ -11,28 +11,37 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleLogin = e => {
+    e.preventDefault();
+    this.props.validaterUser(this.state);
+  };
+
   render() {
     return (
       <div className="Login">
         <div className="LoginForm">
-          <form method="POST">
+          <form onSubmit={this.handleLogin}>
             <div>
-              <label>Enter your User Name:</label>
+              <label htmlFor="userName">Enter your User Name:</label>
               <input
                 type="text"
                 id="userName"
                 name="userName"
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div>
-              <label>Enter your password: &nbsp;&nbsp;</label>
+              <label htmlFor="password">
+                Enter your password: &nbsp;&nbsp;
+              </label>
 
               <input
-                type="text"
+                type="password"
                 id="password"
                 name="password"
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div className="forUserAndSingIn">
@@ -42,19 +51,14 @@ class Login extends Component {
                 </a>
               </span>{" "}
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <button
-                type="button"
-                id="loginBtn"
-                name="login"
-                onClick={() => this.props.validaterUser(this.state)}
-              >
+              <button type="submit" id="loginBtn" name="login">
                 Login
               </button>
             </div>
           </form>
         </div>
         <div className="signUp">
-          <button type="submit" id="signUp" name="signUp">
+          <button type="button" id="signUp" name="signUp">
             New User? Sign Up
           </button>
         </div>
