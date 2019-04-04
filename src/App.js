@@ -3,6 +3,7 @@ import "./App.css";
 import Login from "./Components/LoginPage";
 import Challenge from "./Components/ChallengePage";
 import AccountDetails from "./Components/AccountDetailspage";
+import Registration from "./Components/RegistrationPage";
 
 export default class App extends Component {
   constructor(props) {
@@ -22,11 +23,15 @@ export default class App extends Component {
     super.setState(newState);
   };
 
+  loginMessage = message => {
+    super.setState({ loginMessage: message });
+  };
+
   /**
    *  this function passes the user details to the security team to validate the user.
    * Security team then pass the phone Number and email
    * */
-  validaterUser = person => {
+  handleSubmitLogin = person => {
     console.log("persone", person);
     const newState = JSON.parse(JSON.stringify(this.state));
 
@@ -63,6 +68,7 @@ export default class App extends Component {
         newState.person.phone = phone;
         newState.person.email = email;
         newState.person.userName = person.userName;
+        newState.error = undefined;
         newState.currentView = "challengeView";
 
         super.setState(newState);
@@ -77,11 +83,16 @@ export default class App extends Component {
   };
 
   render() {
-    let tmpView = <Login validaterUser={this.validaterUser} />;
+    let tmpView = <Login handleSubmitLogin={this.handleSubmitLogin} />;
     switch (this.state.currentView) {
       case "loginView":
         tmpView = (
-          <Login validaterUser={this.validaterUser} error={this.state.error} />
+          <Login
+            loginMessage={this.state.loginMessage}
+            handleSubmitLogin={this.handleSubmitLogin}
+            error={this.state.error}
+            switchView={this.switchView}
+          />
         );
         break;
 
@@ -96,11 +107,24 @@ export default class App extends Component {
         break;
 
       case "accountView":
-        tmpView = <AccountDetails person={this.state.person} />;
+        tmpView = (
+          <AccountDetails
+            person={this.state.person}
+            switchView={this.switchView}
+          />
+        );
         break;
 
+      case "registrationView":
+        tmpView = (
+          <Registration
+            switchView={this.switchView}
+            loginMessage={this.loginMessage}
+          />
+        );
+        break;
       default:
-        tmpView = <Login validaterUser={this.validaterUser} />;
+        tmpView = <Login handleSubmitLogin={this.handleSubmitLogin} />;
         break;
     }
     return (

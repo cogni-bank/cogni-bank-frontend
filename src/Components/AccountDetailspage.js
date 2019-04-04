@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import LogOut from "./LogOut";
 
 /*Will be called once success Otp validation   */
 export default class AccountDetails extends Component {
@@ -9,6 +10,7 @@ export default class AccountDetails extends Component {
       <div id="accountDetails">
         {this.props.person.userName}
         <h1>Welcome to the AccountDetails</h1>
+        <LogOut logOut={this.props.switchView} />
       </div>
     );
   }

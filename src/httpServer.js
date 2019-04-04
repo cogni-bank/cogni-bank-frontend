@@ -1,12 +1,14 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-var app = express();
+var cors = require("cors");
 
+var app = express();
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get("/", function(req, res) {
-  res.sendfile("index.html");
+  res.end("HI!");
 });
 
 app.post("/loginUser", function(req, res) {
@@ -45,6 +47,37 @@ app.post("/challenge", function(req, res) {
   console.log(req.path);
   res.end("yes");
 });
-app.listen(8080, function() {
-  console.log("Started on PORT 8080");
+
+app.post("/registerUser", function(req, res) {
+  // create a user by calling User management microservice
+  // Get the userID and create user security questions by calling related microservice
+  // if user is created successfully return a true message
+  // 400 when the request is wrong. response -> ["error 1", "error 2"]
+  // 406 when username is already registered
+  // 4xx email is already registered by a user ????? not implemented in user management
+  // 4xx mobile is already registered by a user ????? not implemented in user management
+  console.log(req.body);
+  res.end('{"registered": true}');
+});
+
+app.post("/getSecurityQuestions", function(req, res) {
+  var user_name = req.body.user;
+  console.log("User name = " + user_name);
+  console.log(req.path);
+
+  var questions = {
+    id: 1,
+    que: "What is you first cars?"
+  };
+  //res.write("user")
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+
+  res.write(JSON.stringify(questions));
+
+  res.end();
+});
+
+app.listen(8090, function() {
+  console.log("Started on PORT 8090");
 });
