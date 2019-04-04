@@ -4,6 +4,9 @@ import Login from "./Components/LoginPage";
 import Challenge from "./Components/ChallengePage";
 import AccountDetails from "./Components/AccountDetailspage";
 import Registration from "./Components/RegistrationPage";
+import ForgotUser from "./Components/ForgotUsername";
+import ForgotPass from "./Components/ForgotPassword";
+import SecurityQuestion from "./Components/SecurityQuestionPage";
 
 export default class App extends Component {
   constructor(props) {
@@ -123,8 +126,41 @@ export default class App extends Component {
           />
         );
         break;
+      case "forgotUser":
+        tmpView = (
+          <ForgotUser
+            // validaterUser={this.validaterUser}
+            person={this.state.person}
+            switchView={this.switchView}
+            //retriveForgotUserName={this.retriveForgotUserName}
+          />
+        );
+        break;
+      case "forgotPass":
+        tmpView = (
+          <ForgotPass
+            // validaterUser={this.validaterUser}
+            person={this.state.person}
+            switchView={this.switchView}
+          />
+        );
+        break;
+      case "SecurityQuestion":
+        tmpView = (
+          <SecurityQuestion
+            // validaterUser={this.validaterUser}
+            person={this.state.person}
+            switchView={this.switchView}
+          />
+        );
+        break;
       default:
-        tmpView = <Login handleSubmitLogin={this.handleSubmitLogin} />;
+        tmpView = (
+          <Login
+            handleSubmitLogin={this.handleSubmitLogin}
+            switchView={this.switchView}
+          />
+        );
         break;
     }
     return (

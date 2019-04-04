@@ -139,6 +139,28 @@ class Login extends Component {
             </div>
           </div>
         </div>
+        {/* Meet Code start */}
+        <br />
+        <div>
+          <button
+            type="button"
+            className="btn btn-warning btn-lg float-center"
+            id="forgotUserBtn"
+            onClick={() => this.props.switchView("forgotUser")}
+          >
+            Forgot UserName?
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button
+            type="button"
+            className="btn btn-danger btn-lg float-center"
+            id="forgotPasswordBtn"
+            onClick={() => this.props.switchView("forgotPass")}
+          >
+            Forgot Password?
+          </button>
+        </div>
+        {/* Meet Code end */}
       </div>
     );
 

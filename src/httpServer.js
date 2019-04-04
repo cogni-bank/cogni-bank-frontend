@@ -77,6 +77,10 @@ app.post("/getSecurityQuestions", function(req, res) {
 
   res.end();
 });
+app.post("/securityQuestions", function(req, res) {
+  console.log(req.body.user);
+  res.end("What is your mother's name?");
+});
 
 app.listen(8090, function() {
   console.log("Started on PORT 8090");
