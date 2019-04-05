@@ -34,6 +34,7 @@ export default class UserOptionForm extends Component {
 
           <button
             type="button"
+            className="btn btn-primary"
             id="submitBtn"
             onClick={() => this.props.sendChallenge(this.props.selectedOption)}
           >

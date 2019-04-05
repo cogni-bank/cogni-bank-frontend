@@ -13,6 +13,7 @@ export default class LogOut extends Component {
     return (
       <div className="logOut">
         <button
+          className="btn btn-secondary"
           type="button"
           id="logOut"
           name="logOut"

@@ -4,14 +4,8 @@ class ForgotPass extends Component {
   state = {
     userName: " "
   };
-
-  // /* UserName and password textbox handling*/
-  // handleChange = e => {
-  //   this.setState({ [e.target.userEmail]: e.target.userEmail });
-
-  // };
+  /** Handling forgot Password component */
   retriveForgotPassword = password => {
-    //send request to security to validate user
     console.log("Inside retrive method");
     fetch("http://localhost:8090/securityQuestions", {
       method: "POST",
@@ -39,7 +33,6 @@ class ForgotPass extends Component {
 
   render() {
     return (
-      //<form method="POST">
       <div>
         <div>
           <label>

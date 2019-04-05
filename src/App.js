@@ -52,7 +52,6 @@ export default class App extends Component {
     })
       .then(res => {
         console.log("The res", res);
-
         if (res.ok) {
           return res.json();
         } else if (res.status === 401) {
@@ -78,11 +77,8 @@ export default class App extends Component {
       })
       .catch(error => {
         console.log("Error --->>>", error);
-
         super.setState({ error });
       });
-
-    //Need to Complete later: if the response is bad(non authentic user) - navigate to login page with retry message
   };
 
   render() {
@@ -129,7 +125,6 @@ export default class App extends Component {
       case "forgotUser":
         tmpView = (
           <ForgotUser
-            // validaterUser={this.validaterUser}
             person={this.state.person}
             switchView={this.switchView}
             //retriveForgotUserName={this.retriveForgotUserName}
@@ -138,17 +133,12 @@ export default class App extends Component {
         break;
       case "forgotPass":
         tmpView = (
-          <ForgotPass
-            // validaterUser={this.validaterUser}
-            person={this.state.person}
-            switchView={this.switchView}
-          />
+          <ForgotPass person={this.state.person} switchView={this.switchView} />
         );
         break;
       case "SecurityQuestion":
         tmpView = (
           <SecurityQuestion
-            // validaterUser={this.validaterUser}
             person={this.state.person}
             switchView={this.switchView}
           />

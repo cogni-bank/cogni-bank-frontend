@@ -139,7 +139,7 @@ class Login extends Component {
             </div>
           </div>
         </div>
-        {/* Meet Code start */}
+        {/* Forgot UserName/Forgot Password */}
         <br />
         <div>
           <button
@@ -160,62 +160,9 @@ class Login extends Component {
             Forgot Password?
           </button>
         </div>
-        {/* Meet Code end */}
+        {/* Forgot UserName/Forgot Password */}
       </div>
     );
-
-    /*return (
-      <div className="Login">
-        
-        <div className="LoginForm">
-          <form onSubmit={this.handleLogin}>
-            <div>
-              <label htmlFor="userName">Enter your User Name:</label>
-              <input
-                type="text"
-                id="userName"
-                name="userName"
-                onChange={this.handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="password">
-                Enter your password: &nbsp;&nbsp;
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                onChange={this.handleChange}
-                required
-              />
-            </div>
-            <div className="forUserAndSingIn">
-              <span className="forgotUser">
-                <a href="/" id="forgotUser">
-                  Forgot User Name/ Password ?
-                </a>
-              </span>{" "}
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <button type="submit" id="loginBtn" name="login">
-                Login
-              </button>
-            </div>
-          </form>
-        </div>
-        <div className="signUp">
-          <button
-            type="button"
-            id="signUp"
-            name="signUp"
-            onClick={this.handleSignUpClick}
-          >
-            New User? Sign Up
-          </button>
-        </div>
-      </div>
-    );*/
   }
 }
 

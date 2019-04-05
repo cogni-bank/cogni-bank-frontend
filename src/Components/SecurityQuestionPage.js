@@ -12,6 +12,7 @@ class SecurityQuestion extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  /*handling security questions recived from user management for corresponding userid*/
   checkAns = () => {
     console.log("inside checkAns Function");
     if (this.state.answer === "MeESt") {
