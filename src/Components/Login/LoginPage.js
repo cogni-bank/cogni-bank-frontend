@@ -94,11 +94,23 @@ class Login extends Component {
     this.setState({ currentView: "RegistrationPage" });
   };
 
+  handleForgotUsernameClick = () => {
+    this.setState({ currentView: "ForgetUsername" });
+  };
+
+  handleForgotPasswordClick = () => {
+    this.setState({ currentView: "ForgetPassword" });
+  };
+
   render() {
     if (this.state.currentView === "challengeView") {
       return <Redirect to="/ChallengeView" />;
     } else if (this.state.currentView === "RegistrationPage") {
       return <Redirect to="/RegistrationPage" />;
+    } else if (this.state.currentView === "ForgetUsername") {
+      return <Redirect to="/ForgetUsername" />;
+    } else if (this.state.currentView === "ForgetPassword") {
+      return <Redirect to="/ForgetPassword" />;
     }
     return (
       <div className="container py-5">
@@ -196,7 +208,7 @@ class Login extends Component {
             type="button"
             className="btn btn-warning btn-lg float-center"
             id="forgotUserBtn"
-            onClick={() => this.props.switchView("forgotUser")}
+            onClick={this.handleForgotUsernameClick}
           >
             Forgot UserName?
           </button>
@@ -205,7 +217,7 @@ class Login extends Component {
             type="button"
             className="btn btn-danger btn-lg float-center"
             id="forgotPasswordBtn"
-            onClick={() => this.props.switchView("forgotPass")}
+            onClick={this.handleForgotPasswordClick}
           >
             Forgot Password?
           </button>

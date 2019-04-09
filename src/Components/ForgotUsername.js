@@ -3,7 +3,8 @@ import React, { Component } from "react";
 class forgotUser extends Component {
   state = {
     userEmail: "",
-    securityQue: "Who was your first girlfriend?"
+    securityQue: "Who was your first girlfriend?",
+    currentView: this.props.currentView
   };
 
   /*handling Forgot userName to send the corresponding email (user management - Notification Team's) */

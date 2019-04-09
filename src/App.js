@@ -7,6 +7,8 @@ import NavBar from "./Components/NavBar/NavBar";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
 import AccountDashboard from "./Components/Accounts/AccountDashboard";
 import RegistrationPage from "./Components/RegistrationPage";
+import ForgetPassword from "./Components/ForgotPassword";
+import ForgetUsername from "./Components/ForgotUsername";
 
 export default class App extends Component {
   constructor(props) {
@@ -54,6 +56,7 @@ export default class App extends Component {
               />
 
               <Route path="/AccountDetails" component={AccountDetails} />
+
               <Route
                 path="/RegistrationPage"
                 component={() => (
@@ -74,6 +77,18 @@ export default class App extends Component {
                     person={this.state.person}
                     currentView={this.state.currentView}
                   />
+                )}
+              />
+              <Route
+                path="/ForgetPassword"
+                component={() => (
+                  <ForgetPassword currentView={this.state.currentView} />
+                )}
+              />
+              <Route
+                path="/ForgetUsername"
+                component={() => (
+                  <ForgetUsername currentView={this.state.currentView} />
                 )}
               />
               <Route
