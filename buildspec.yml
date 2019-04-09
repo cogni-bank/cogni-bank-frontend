@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    DeployBucket: "cognibank"
+    DeployBucket: "cognibank.name"
 
 phases:
   pre_build:
