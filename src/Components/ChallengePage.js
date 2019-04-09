@@ -75,7 +75,8 @@ export default class Challenge extends Component {
         // }
       })
       .then(response => {
-        this.props.switchView("accountView");
+        // to do
+        // add routing
         console.log("AccountView method.");
       })
       .catch(error => {

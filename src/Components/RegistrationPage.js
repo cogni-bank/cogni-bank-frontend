@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 
 export default class Registration extends Component {
   state = {
-    user: {}
+    user: {},
+    currentView: this.props.currentView
   };
 
   handleChange = e => {
@@ -51,8 +53,8 @@ export default class Registration extends Component {
         console.log("The response", response);
 
         if (response.registered) {
+          this.setState({ currentView: "login" });
           this.props.loginMessage("Successfully registered!");
-          this.props.switchView("loginView");
         }
       })
       .catch(error => {
@@ -63,6 +65,9 @@ export default class Registration extends Component {
   };
 
   render() {
+    if (this.state.currentView === "login") {
+      return <Redirect to="/login" />;
+    }
     return (
       <div className="container-fluid bg-light py-3">
         <div className="row">
@@ -247,8 +252,7 @@ export default class Registration extends Component {
                         name="terms"
                         type="checkbox"
                       />
-                      I have read and agree to the{" "}
-                      <a href="#">terms of service</a>
+                      I have read and agree to the <a>terms of service</a>
                     </label>
                   </div>
                   <input

@@ -6,6 +6,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* background-image: url("./Images/CogniBank.png"); */
 }
 
 code {
@@ -13,7 +14,7 @@ code {
     monospace;
 }
 div#root {
-  padding-top: 10%;
+  padding-top: 0%;
   text-align: center;
 }
 

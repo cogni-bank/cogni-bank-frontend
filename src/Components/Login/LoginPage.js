@@ -1,10 +1,56 @@
 import React, { Component } from "react";
-import "../style/login.css";
+import { Redirect } from "react-router-dom";
+import "../../style/login.css";
+import "../../style/HomePage.css";
 
 class Login extends Component {
   state = {
     userName: "",
-    password: ""
+    password: "",
+    currentView: this.props.currentView
+  };
+
+  handleSubmitLogin = person => {
+    //console.log("persone", person);
+    //send request to security to validate user
+    fetch("http://localhost:8080/loginUser", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json;charset=utf-8"
+      },
+      body: JSON.stringify({
+        userName: person.userName,
+        password: person.password
+      })
+    })
+      .then(res => {
+        console.log("The res", res);
+        if (res.ok) {
+          return res.json();
+        } else if (res.status === 401) {
+          throw new Error("User name or password is wrong!");
+        } else {
+          throw new Error("Unknown error happened!");
+        }
+      })
+      .then(response => {
+        console.log("The response", response);
+
+        const { userId, phone, email } = response;
+
+        this.props.person.userId = userId;
+        this.props.person.phone = phone;
+        this.props.person.email = email;
+        this.props.person.userName = person.userName;
+
+        this.setState({ currentView: "challengeView" });
+        this.props.submitState(this.props.person);
+      })
+      .catch(error => {
+        console.log("Error --->>>", error);
+        super.setState({ error });
+      });
   };
 
   /* UserName and password textbox handling*/
@@ -36,25 +82,29 @@ class Login extends Component {
     }
 
     if (!newState.formError) {
-      this.props.handleSubmitLogin(this.state);
+      this.handleSubmitLogin(this.state);
     } else {
+      this.props.submitState(newState);
       this.setState(newState);
     }
   };
 
   /*Function to redirect to Sign up page for registration */
   handleSignUpClick = () => {
-    this.props.switchView("registrationView");
+    this.setState({ currentView: "RegistrationPage" });
   };
 
   render() {
+    if (this.state.currentView === "challengeView") {
+      return <Redirect to="/ChallengeView" />;
+    } else if (this.state.currentView === "RegistrationPage") {
+      return <Redirect to="/RegistrationPage" />;
+    }
     return (
       <div className="container py-5">
         <div className="row">
           <div className="col-md-12">
-            <h2 className="text-center text-white mb-4">
-              Bootstrap 4 Login Form
-            </h2>
+            <div className="cogniBankLogo" />
             <div className="row">
               <div className="col-md-6 mx-auto">
                 <div className="card rounded-0">
@@ -82,7 +132,7 @@ class Login extends Component {
                         this.state.formError ? "form was-validated" : "form"
                       }
                       autoComplete="off"
-                      novalidate=""
+                      noValidate=""
                       id="formLogin"
                       role="form"
                     >
@@ -117,7 +167,6 @@ class Login extends Component {
                           {this.state.passwordError}
                         </div>
                       </div>
-
                       <button
                         type="button"
                         className="btn btn-primary btn-lg float-right"
@@ -125,6 +174,7 @@ class Login extends Component {
                       >
                         Sign Up
                       </button>
+
                       <button
                         type="submit"
                         className="btn btn-success btn-lg float-left"
