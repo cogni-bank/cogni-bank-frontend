@@ -3,7 +3,7 @@ version: 0.2
 env:
   variables:
     S3_BUCKET: "cognibank.name"
-    CLOUDFRONT_DIST_ID: "E1XHB743F6JMDY"
+    CLOUDFRONT_DIST_ID: E1XHB743F6JMDY
 
 phases:
   pre_build:
