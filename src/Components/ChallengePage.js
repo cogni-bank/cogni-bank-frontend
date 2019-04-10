@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import UserOptionForm from "./UserOptionForm";
 import OtpForm from "./OtpForm";
 import LogOut from "./LogOut";
+import { Redirect } from "react-router-dom";
 
 /*Challenge page has UserOPtionForm and  OtpForm as child components */
 export default class Challenge extends Component {
   state = {
     selectedOption: "email",
-    challengeCurrentView: "userOptionForm"
+    statusToHideOptForm: false,
+    navToAccountsPage: ""
   };
 
   /*This function is called with respect to radio button handling in the userOption page */
@@ -41,7 +43,7 @@ export default class Challenge extends Component {
     })
       .then(res => {
         console.log("Challenge OTP ", res);
-        newState.challengeCurrentView = "otpForm";
+        newState.statusToHideOptForm = true;
         super.setState(newState);
         console.log("The response sending to security", this.props.person);
       })
@@ -78,6 +80,7 @@ export default class Challenge extends Component {
         // to do
         // add routing
         console.log("AccountView method.");
+        this.setState({ navToAccountsPage: "accountDashboard" });
       })
       .catch(error => {
         console.error("Error", error);
@@ -86,17 +89,8 @@ export default class Challenge extends Component {
   };
 
   render() {
-    let tmpView = <UserOptionForm sendChallenge={this.sendChallenge} />;
-    if (this.state.challengeCurrentView === "userOptionForm") {
-      tmpView = (
-        <UserOptionForm
-          sendChallenge={this.sendChallenge}
-          person={this.props.person}
-          selectedOption={this.state.selectedOption}
-          handleOptionChange={this.handleOptionChange}
-        />
-      );
-    } else if (this.state.challengeCurrentView === "otpForm") {
+    let tmpView;
+    if (this.state.statusToHideOptForm) {
       tmpView = (
         <OtpForm
           sendOTP={this.sendOTP}
@@ -106,8 +100,18 @@ export default class Challenge extends Component {
       );
     }
 
+    if (this.state.navToAccountsPage === "accountDashboard") {
+      return <Redirect to="/accountDashboard" />;
+    }
+
     return (
       <div className="ChallengeForm">
+        <UserOptionForm
+          sendChallenge={this.sendChallenge}
+          person={this.props.person}
+          selectedOption={this.state.selectedOption}
+          handleOptionChange={this.handleOptionChange}
+        />
         {tmpView}
         <LogOut logOut={this.props.switchView} />
       </div>

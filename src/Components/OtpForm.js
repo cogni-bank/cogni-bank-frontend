@@ -11,6 +11,10 @@ export default class OtpForm extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleHomeClick = () => {
+    this.setState({ currentView: "Home" });
+  };
+
   /* This is called before our render function. The object that is
     returned is assigned to this.state, so we can use it later.*/
   getInitialState() {
