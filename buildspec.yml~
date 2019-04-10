@@ -22,19 +22,19 @@ phases:
       # browser caching
       - >
         aws s3 cp --acl private 
-            --cache-control="max-age=0, no-cache, no-store, must-revalidate" 
-            ./build/service-worker.js s3://$DeployBucket/
+        --cache-control="max-age=0, no-cache, no-store, must-revalidate" 
+        ./build/service-worker.js s3://$DeployBucket/
       # set the cache-control headers for index.html to prevent
       # browser caching
       - >
         aws s3 cp --acl private 
-            --cache-control="max-age=0, no-cache, no-store, must-revalidate" 
-            ./build/index.html s3://$DeployBucket/
+        --cache-control="max-age=0, no-cache, no-store, must-revalidate" 
+        ./build/index.html s3://$DeployBucket/
       # invalidate the CloudFront cache for index.html and service-worker.js
       # to force CloudFront to update its edge locations with the new versions
       - >
         aws cloudfront create-invalidation --distribution-id $Distribution 
-            --paths /index.html /service-worker.js
+        --paths /index.html /service-worker.js
 
 artifacts:
   files:
