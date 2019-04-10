@@ -3,6 +3,7 @@ version: 0.2
 env:
   variables:
     DeployBucket: "cognibank.name"
+    Distribution: "E1XHB743F6JMDY"
 
 phases:
   pre_build:
@@ -29,6 +30,12 @@ phases:
         aws s3 cp --acl private 
         --cache-control="max-age=0, no-cache, no-store, must-revalidate" 
         ./build/index.html s3://$DeployBucket/
+      # invalidate the CloudFront cache for index.html and service-worker.js
+      # to force CloudFront to update its edge locations with the new versions
+      - >
+        aws cloudfront create-invalidation --distribution-id $Distribution 
+        --paths /index.html /service-worker.js
+
 artifacts:
   files:
     - '**/*'
