@@ -1,11 +1,20 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 
+// API calls: User management security questions.
+const API_SECURITY_QUESTION_URL = "http://localhost:9001/api/v1/usersecurity";
+const GET_ALL_QUESTIONS_MAPPING = "/questions";
+const CREATE_USER_ANSWER_MAPPING = "/createUserAnswer";
+// API calls: User management.
+const API_USER_MANAGEMENT_URL = "http://localhost:9000/users/management";
+const CREATE_USER_MAPPING = "/createUser";
+
 export default class Registration extends Component {
   state = {
     user: {},
     securityQuestions: [],
     selectedQuestion: "-1",
+    userId: "",
     currentView: this.props.currentView
   };
 
@@ -14,7 +23,7 @@ export default class Registration extends Component {
   */
   componentDidMount() {
     // Make an api call to security questions microservice to get all the questions.
-    fetch("http://localhost:9000/api/v1/usersecurity/questions", {
+    fetch(API_SECURITY_QUESTION_URL + GET_ALL_QUESTIONS_MAPPING, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -66,7 +75,7 @@ export default class Registration extends Component {
 
     // Make an api call to user management microservice to register the user with the details entered by the user
     // in the respective fields.
-    fetch("http://localhost:8090/registerUser", {
+    fetch(API_USER_MANAGEMENT_URL + CREATE_USER_MAPPING, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -89,6 +98,50 @@ export default class Registration extends Component {
         }
       })
     })
+      .then(response => {
+        console.log("The response", response);
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === 401) {
+          throw new Error("User name or password is wrong!");
+        } else {
+          throw new Error("Unknown error happened!");
+        }
+      })
+      .then(response => {
+        console.log("The response.userId:", response.userId);
+        console.log(
+          "The response.userId !== condition:",
+          response.userId !== ""
+        );
+        if (response.userId !== "") {
+          //this.setState({ userId: response.userId });
+          //console.log("After...", this.state.userId);
+          console.log(
+            "Calling the API_SECURITY_QUESTION_URL + CREATE_USER_ANSWER_MAPPING..."
+          );
+          // Make an api call to user management - security question microservice to save the security question
+          // selected based on the user id generated in the above api call to generate the new user.
+          return fetch(
+            API_SECURITY_QUESTION_URL +
+              CREATE_USER_ANSWER_MAPPING +
+              "/" +
+              response.userId,
+            {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json;charset=utf-8"
+              },
+              body: JSON.stringify({
+                questionId: this.state.selectedQuestion,
+                answer: this.state.answer
+              })
+            }
+          );
+          //this.props.loginMessage("Successfully registered!");
+        }
+      })
       .then(res => {
         console.log("The res", res);
 
@@ -102,56 +155,13 @@ export default class Registration extends Component {
       })
       .then(response => {
         console.log("The response", response);
-
-        if (response.registered) {
+        if (response.created) {
           this.setState({ currentView: "login" });
           this.props.loginMessage("Successfully registered!");
         }
       })
       .catch(error => {
         console.log("Error --->>>", error);
-
-        super.setState({ error });
-      });
-
-    // Make an api call to user management - security question microservice to save the security question
-    // selected based on the user id generated in the above api call to generate the new user.
-    fetch(
-      "http://localhost:8090/api/v1/usersecurity/createUserAnswer/{userId}",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json;charset=utf-8"
-        },
-        body: JSON.stringify({
-          questionId: this.state.selectedQuestion,
-          answer: this.state.answer
-        })
-      }
-    )
-      .then(res => {
-        console.log("The res", res);
-
-        if (res.ok) {
-          return res.json();
-        } else if (res.status === 401) {
-          throw new Error("User name or password is wrong!");
-        } else {
-          throw new Error("Unknown error happened!");
-        }
-      })
-      .then(response => {
-        console.log("The response", response);
-
-        if (response.registered) {
-          this.setState({ currentView: "login" });
-          this.props.loginMessage("Successfully registered!");
-        }
-      })
-      .catch(error => {
-        console.log("Error --->>>", error);
-
         super.setState({ error });
       });
   };

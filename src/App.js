@@ -36,7 +36,7 @@ export default class App extends Component {
     super.setState(newState);
   };
 
-  loginMessage = message => {
+  loginMessageFunction = message => {
     super.setState({ loginMessage: message });
   };
 
@@ -58,7 +58,7 @@ export default class App extends Component {
                 path="/RegistrationPage"
                 component={() => (
                   <RegistrationPage
-                    loginMessage={this.loginMessage}
+                    loginMessage={this.loginMessageFunction}
                     currentView={this.state.currentView}
                   />
                 )}

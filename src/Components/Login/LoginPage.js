@@ -6,18 +6,21 @@ import "../../style/HomePage.css";
 // API calls.
 const API_URL = "http://localhost:8080";
 const LOGIN_USER_MAPPING = "/loginUser";
-const VALIDATE_OTP_MAPPING = "/validateUserWithOTP";
 
 export default class Login extends Component {
-  state = {
-    userName: "",
-    password: "",
-    currentView: this.props.currentView
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: "",
+      password: "",
+      isErrorMessage: false,
+      errorMessage: "",
+      currentView: this.props.currentView
+    };
+  }
 
   handleSubmitLogin = person => {
-    //console.log("persone", person);
-    //send request to security to validate user
+    // Send request to security to validate user.
     fetch(API_URL + LOGIN_USER_MAPPING, {
       method: "POST",
       headers: {
@@ -29,31 +32,36 @@ export default class Login extends Component {
         password: person.password
       })
     })
-      .then(res => {
-        console.log("The res", res);
-        if (res.ok) {
-          return res.json();
-        } else if (res.status === 401) {
-          throw new Error("User name or password is wrong!");
+      .then(response => {
+        console.log("Response returned from the security api:", response);
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === 401) {
+          this.setState({
+            isErrorMessage: true,
+            errorMessage: "Unauthorized access!"
+          });
+          throw new Error("Unauthorized access!");
         } else {
+          this.setState({
+            isErrorMessage: true,
+            errorMessage: "Unknown error happened!"
+          });
           throw new Error("Unknown error happened!");
         }
       })
       .then(response => {
-        console.log("The response", response);
-
+        console.log("JSON response returned from the security api:", response);
         const { userId, phone, email } = response;
-
         this.props.person.userId = userId;
         this.props.person.phone = phone;
         this.props.person.email = email;
         this.props.person.userName = person.userName;
-
         this.setState({ currentView: "challengeView" });
         this.props.submitState(this.props.person);
       })
       .catch(error => {
-        console.log("Error --->>>", error);
+        console.log("Error while calling security api --->>>", error);
         super.setState({ error });
       });
   };
@@ -138,6 +146,13 @@ export default class Login extends Component {
                   {this.props.error ? (
                     <div className="alert alert-danger alert-dismissible">
                       {this.props.error.message}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {this.state.isErrorMessage ? (
+                    <div className="alert alert-success alert-dismissible">
+                      {this.state.errorMessage}
                     </div>
                   ) : (
                     ""
