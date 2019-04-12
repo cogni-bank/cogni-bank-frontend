@@ -3,7 +3,10 @@ import Nav from "react-bootstrap/Nav";
 
 import React, { Component } from "react";
 
-class NavBar extends Component {
+export default class NavBar extends Component {
+  state = {
+    userName: localStorage.getItem("userName")
+  };
   render() {
     return (
       <React.Fragment>
@@ -19,7 +22,7 @@ class NavBar extends Component {
               </Nav>
               <Nav>
                 <Nav.Link href="/login">Login</Nav.Link>
-                <Nav.Link>{this.props.person}</Nav.Link>
+                <Nav.Link>{this.state.userName}</Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Navbar>
@@ -28,5 +31,3 @@ class NavBar extends Component {
     );
   }
 }
-
-export default NavBar;

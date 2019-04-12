@@ -3,7 +3,12 @@ import { Redirect } from "react-router-dom";
 import "../../style/login.css";
 import "../../style/HomePage.css";
 
-class Login extends Component {
+// API calls.
+const API_URL = "http://localhost:8080";
+const LOGIN_USER_MAPPING = "/loginUser";
+const VALIDATE_OTP_MAPPING = "/validateUserWithOTP";
+
+export default class Login extends Component {
   state = {
     userName: "",
     password: "",
@@ -13,7 +18,7 @@ class Login extends Component {
   handleSubmitLogin = person => {
     //console.log("persone", person);
     //send request to security to validate user
-    fetch("http://localhost:8080/loginUser", {
+    fetch(API_URL + LOGIN_USER_MAPPING, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -227,5 +232,3 @@ class Login extends Component {
     );
   }
 }
-
-export default Login;

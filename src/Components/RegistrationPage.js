@@ -4,17 +4,68 @@ import { Redirect } from "react-router-dom";
 export default class Registration extends Component {
   state = {
     user: {},
+    securityQuestions: [],
+    selectedQuestion: "-1",
     currentView: this.props.currentView
   };
+
+  /*
+  https://reactjs.org/docs/react-component.html#componentdidmount
+  */
+  componentDidMount() {
+    // Make an api call to security questions microservice to get all the questions.
+    fetch("http://localhost:9000/api/v1/usersecurity/questions", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json;charset=utf-8"
+      }
+    })
+      .then(response => {
+        console.log("The response for getting all the questions:", response);
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === 401) {
+          throw new Error(
+            "Something wrong in fetching the questions from the security questions microservice!"
+          );
+        } else {
+          throw new Error("Unknown error happened!");
+        }
+      })
+      .then(data => {
+        console.log("The response", data);
+        let securityQuestionsFromApi = data.map(secQuestion => {
+          return { value: secQuestion.id, display: secQuestion.question };
+        });
+        this.setState({
+          securityQuestions: [
+            {
+              value: "-1",
+              display: "Select your favourite security question!"
+            }
+          ].concat(securityQuestionsFromApi)
+        });
+        console.log(
+          "this.state.securityQuestions:",
+          this.state.securityQuestions
+        );
+      })
+      .catch(error => {
+        console.log("Error from security questions --->>>", error);
+      });
+  }
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
   /*  */
   handleRegistraton = e => {
     e.preventDefault();
 
-    //send request to security to validate user
+    // Make an api call to user management microservice to register the user with the details entered by the user
+    // in the respective fields.
     fetch("http://localhost:8090/registerUser", {
       method: "POST",
       headers: {
@@ -38,6 +89,47 @@ export default class Registration extends Component {
         }
       })
     })
+      .then(res => {
+        console.log("The res", res);
+
+        if (res.ok) {
+          return res.json();
+        } else if (res.status === 401) {
+          throw new Error("User name or password is wrong!");
+        } else {
+          throw new Error("Unknown error happened!");
+        }
+      })
+      .then(response => {
+        console.log("The response", response);
+
+        if (response.registered) {
+          this.setState({ currentView: "login" });
+          this.props.loginMessage("Successfully registered!");
+        }
+      })
+      .catch(error => {
+        console.log("Error --->>>", error);
+
+        super.setState({ error });
+      });
+
+    // Make an api call to user management - security question microservice to save the security question
+    // selected based on the user id generated in the above api call to generate the new user.
+    fetch(
+      "http://localhost:8090/api/v1/usersecurity/createUserAnswer/{userId}",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=utf-8"
+        },
+        body: JSON.stringify({
+          questionId: this.state.selectedQuestion,
+          answer: this.state.answer
+        })
+      }
+    )
       .then(res => {
         console.log("The res", res);
 
@@ -225,14 +317,23 @@ export default class Registration extends Component {
                     </div>
                   </div>
                   <div className="form-group">
-                    <select className="form-control input-lg">
-                      <option defaultValue value="-1">
-                        Security Question
-                      </option>
-                      <option value="0">what is your favourite car?</option>
-                      <option value="1">
-                        what is your Mother maiden name?
-                      </option>
+                    <select
+                      className="form-control input-lg"
+                      value={this.state.selectedQuestion}
+                      onChange={e =>
+                        this.setState({
+                          selectedQuestion: e.target.value
+                        })
+                      }
+                    >
+                      {this.state.securityQuestions.map(secQuestion => (
+                        <option
+                          key={secQuestion.value}
+                          value={secQuestion.value}
+                        >
+                          {secQuestion.display}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   <div className="form-group">

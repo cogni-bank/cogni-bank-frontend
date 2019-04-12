@@ -4,6 +4,11 @@ import OtpForm from "./OtpForm";
 import LogOut from "./LogOut";
 import { Redirect } from "react-router-dom";
 
+// API calls.
+const API_URL = "http://localhost:8080";
+const SEND_OTP_MAPPING = "/sendOtp";
+const VALIDATE_OTP_MAPPING = "/validateUserWithOTP";
+
 /*Challenge page has UserOPtionForm and  OtpForm as child components */
 export default class Challenge extends Component {
   state = {
@@ -30,7 +35,7 @@ export default class Challenge extends Component {
   sendChallenge = selectedOption => {
     const newState = JSON.parse(JSON.stringify(this.state));
 
-    fetch("http://localhost:8080/sendOtp", {
+    fetch(API_URL + SEND_OTP_MAPPING, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -50,17 +55,18 @@ export default class Challenge extends Component {
       .catch(error => console.error("Error", error));
   };
 
-  /* Send the user enterd otp to security team ,and 
+  /* Send the user entered otp to security team ,and 
     ,check the response string and switch the page based on that
    */
   sendOTP = otpCode => {
     //send request to security to validate user
-    fetch("http://localhost:8080/validateUserWithOTP", {
+    fetch(API_URL + VALIDATE_OTP_MAPPING, {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json;charset=utf-8"
+        "Content-Type": "application/json"
       },
+      //credentials: "same-origin", //"include",
       body: JSON.stringify({
         code: otpCode,
         userId: this.props.person.userId
@@ -68,18 +74,22 @@ export default class Challenge extends Component {
     })
       .then(res => {
         if (res.ok) {
-          console.log("Response Captured in sendOTP method", res);
+          console.log("Response captured in validateUserWithOTP method:", res);
           return res;
-        } else if (res.status === 401) {
+        } else if (res.status === 401 || res.status === 404) {
           throw new Error("OTP Code is wrong");
         } //else {
         //   throw new Error("Unknown error happened!");
         // }
       })
       .then(response => {
+        response.headers.forEach(function(val, key) {
+          console.log(key + " -> " + val);
+        });
+      })
+      .then(response => {
         // to do
         // add routing
-        console.log("AccountView method.");
         this.setState({ navToAccountsPage: "accountDashboard" });
       })
       .catch(error => {

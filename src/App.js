@@ -21,8 +21,9 @@ export default class App extends Component {
   }
 
   submitChange = newPerson => {
-    console.log("seeting state" + newPerson.userId);
+    console.log("seeking state-->" + newPerson.userId);
     const newState = { ...this.state };
+    localStorage.setItem("userName", newPerson.userName);
     newState.person = newPerson;
     super.setState(newState);
   };
@@ -49,11 +50,7 @@ export default class App extends Component {
         <div>
           <BrowserRouter>
             <Switch>
-              <Route
-                exact
-                path="/accountDashboard"
-                component={AccountDashboard}
-              />
+              <Route path="/accountDashboard" component={AccountDashboard} />
 
               <Route path="/AccountDetails" component={AccountDetails} />
 
