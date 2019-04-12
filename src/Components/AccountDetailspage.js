@@ -10,7 +10,7 @@ export default class AccountDetails extends Component {
       <div id="accountDetails">
         {this.props.person.userName}
         <h1>Welcome to the AccountDetails</h1>
-        <LogOut logOut={this.props.switchView} />
+        <LogOut />
       </div>
     );
   }
