@@ -1,10 +1,18 @@
 import React, { Component } from "react";
+import AccountDetails from "../AccountDetails";
 
 export default class AccountDashboard extends Component {
+  state = {
+    accountId: ""
+  };
   render() {
     return (
       <div>
-        <h1>Accounts Dashboard work in progress...</h1>
+        <AccountDetails
+          person={this.props.person}
+          currentView={this.props.currentView}
+          //sendAccountNumber="daniel"
+        />
       </div>
     );
   }

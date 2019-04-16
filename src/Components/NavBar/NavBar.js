@@ -3,10 +3,7 @@ import Nav from "react-bootstrap/Nav";
 
 import React, { Component } from "react";
 
-export default class NavBar extends Component {
-  state = {
-    userName: localStorage.getItem("userName")
-  };
+class NavBar extends Component {
   render() {
     return (
       <React.Fragment>
@@ -16,13 +13,19 @@ export default class NavBar extends Component {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mr-auto">
-                <Nav.Link href="/accountDashboard" to="/acccounts">
+                <Nav.Link href="/AccountDetails" to="/AccountDetails">
                   Accounts
+                </Nav.Link>
+                <Nav.Link href="/transactions" to="/transactions">
+                  Transactions
+                </Nav.Link>
+                <Nav.Link href="/fundTransfer" to="/fundTransfer">
+                  Fund Transfer
                 </Nav.Link>
               </Nav>
               <Nav>
                 <Nav.Link href="/login">Login</Nav.Link>
-                <Nav.Link>{this.state.userName}</Nav.Link>
+                <Nav.Link>{this.props.person}</Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Navbar>
@@ -31,3 +34,5 @@ export default class NavBar extends Component {
     );
   }
 }
+
+export default NavBar;

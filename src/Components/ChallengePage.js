@@ -93,7 +93,14 @@ export default class Challenge extends Component {
       .then(response => {
         // to do
         // add routing
-        this.setState({ navToAccountsPage: "accountDashboard" });
+        console.log("AccountView method.");
+
+        //HERE
+        //  this.props.switchView("loginView");
+        //  this.props.switchViewFromNavBar("AccountDetails");
+        const newState = { ...this.state };
+        newState.challengeCurrentView = "AccountDetails";
+        this.setState(newState);
       })
       .catch(error => {
         console.error("Error", error);
@@ -102,6 +109,9 @@ export default class Challenge extends Component {
   };
 
   render() {
+    if (this.state.challengeCurrentView === "AccountDetails") {
+      return <Redirect to="/AccountDetails" />;
+    }
     let tmpView;
     if (this.state.statusToHideOptForm) {
       tmpView = (
@@ -111,10 +121,6 @@ export default class Challenge extends Component {
           error={this.state.error}
         />
       );
-    }
-
-    if (this.state.navToAccountsPage === "accountDashboard") {
-      return <Redirect to="/accountDashboard" />;
     }
 
     return (

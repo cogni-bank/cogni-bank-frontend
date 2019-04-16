@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import "./App.css";
 import Login from "./Components/Login/LoginPage";
 import Challenge from "./Components/ChallengePage";
-import AccountDetails from "./Components/AccountDetailspage";
+import AccountDetails from "./Components/AccountDetails";
 import NavBar from "./Components/NavBar/NavBar";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
-import AccountDashboard from "./Components/Accounts/AccountDashboard";
 import RegistrationPage from "./Components/RegistrationPage";
 import ForgetPassword from "./Components/ForgotPassword";
 import ForgetUsername from "./Components/ForgotUsername";
+import TransactionDetails from "./Components/TransactionDetails";
+import FundTransfer from "./Components/FundTransfer";
 
 export default class App extends Component {
   constructor(props) {
@@ -36,6 +37,21 @@ export default class App extends Component {
     super.setState(newState);
   };
 
+  sendAccountNumber = accountID => {
+    const newState = { ...this.state };
+    console.log("Entered the update ", accountID);
+    newState.accountID = accountID;
+    newState.currentView = "transactions";
+    super.setState(newState);
+  };
+
+  goToFundTransfer = () => {
+    const newState = { ...this.state };
+    console.log("fundTransfer ");
+    newState.currentView = "fundTransfer";
+    super.setState(newState);
+  };
+
   loginMessageFunction = message => {
     super.setState({ loginMessage: message });
   };
@@ -50,9 +66,28 @@ export default class App extends Component {
         <div>
           <BrowserRouter>
             <Switch>
-              <Route path="/accountDashboard" component={AccountDashboard} />
+            <Route
+                path="/AccountDetails"
+                component={() => (
+                  <AccountDetails
+                    person={this.state.person}
+                    currentView={this.state.currentView}
+                    sendAccountNumber={this.sendAccountNumber}
+                    goToFundTransfer={this.goToFundTransfer}
+                  />
+                )}
+              />
 
-              <Route path="/AccountDetails" component={AccountDetails} />
+<Route
+                path="/transactions"
+                component={() => (
+                  <TransactionDetails
+                    accountID={this.state.accountID}
+                    currentView={this.state.currentView}
+                    sendAccountNumber={this.sendAccountNumber}
+                  />
+                )}
+              />
 
               <Route
                 path="/RegistrationPage"
@@ -91,7 +126,16 @@ export default class App extends Component {
               <Route
                 exact
                 path="/ChallengeView"
-                component={() => <Challenge person={this.state.person} />}
+                component={() => (
+                  <Challenge
+                    person={this.state.person}
+                    switchViewFromNavBar={this.switchViewFromNavBar}
+                  />
+                )}
+              />
+              <Route
+                path="/fundTransfer"
+                component={() => <FundTransfer person={this.state.person} />}
               />
             </Switch>
           </BrowserRouter>
