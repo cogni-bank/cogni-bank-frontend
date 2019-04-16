@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 
 // API calls: User management security questions.
-const API_SECURITY_QUESTION_URL = "http://localhost:9001/api/v1/usersecurity";
-const GET_ALL_QUESTIONS_MAPPING = "/questions";
+const API_SECURITY_QUESTION_URL = "http://localhost:9001/users/management/securityquestions";
+const GET_ALL_QUESTIONS_MAPPING = "/getAllQuestions";
 const CREATE_USER_ANSWER_MAPPING = "/createUserAnswer";
+
 // API calls: User management.
 const API_USER_MANAGEMENT_URL = "http://localhost:9000/users/management";
 const CREATE_USER_MAPPING = "/createUser";

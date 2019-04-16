@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Login from '../Components/LoginPage';
+import Login from '../Components/Login/LoginPage';
 import {shallow} from 'enzyme';
 
 it('Login page contains the UI elements', () => {

@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 
-class forgotUser extends Component {
+// API calls: User management.
+const API_USER_MANAGEMENT_URL = "http://localhost:9000/users/management";
+const GET_USER_NAME_MAPPING = "/getUserName";
+
+export default class forgotUser extends Component {
   state = {
     userEmail: "",
     securityQue: "Who was your first girlfriend?",
@@ -9,24 +13,19 @@ class forgotUser extends Component {
 
   /*handling Forgot userName to send the corresponding email (user management - Notification Team's) */
   retriveForgotUserName = userName => {
-    console.log("Inside retrive method");
-    fetch("http://localhost:8090/securityQuestions", {
-      method: "POST",
+    fetch(API_USER_MANAGEMENT_URL + GET_USER_NAME_MAPPING + "/" + this.state.userEmail, {
+      method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json;charset=utf-8"
-      },
-      body: JSON.stringify({
-        userEmail: this.state.userEmail,
-        securityQue: "You Submitted your email successfuly"
-      })
+      }
     })
-      .then(res => {
-        return res;
+      .then(response => {
+        return response.json();
       })
-      .then(() => {
-        alert("Your UserName has been send to given Email");
-        this.props.switchView("LoginView");
+      .then(response => {
+        const {userName} = response;
+        alert("This time we're provided you with user name. Next time we'll ask for your security question. Please have a note of your UserName: " + userName);
       })
       .catch(error => console.error("Error", error));
   };
@@ -39,7 +38,7 @@ class forgotUser extends Component {
     return (
       <div>
         <div>
-          <label>Enter your Email attached with this account : &nbsp; </label>
+          <label>Enter your Email Id (used for signing-up with Cogni-Bank) : &nbsp; </label>
           <input
             type="text"
             id="userEmail"
@@ -60,4 +59,3 @@ class forgotUser extends Component {
     );
   }
 }
-export default forgotUser;

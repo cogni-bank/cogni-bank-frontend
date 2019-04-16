@@ -73,11 +73,11 @@ export default class Challenge extends Component {
       })
     })
       .then(response => {
+        console.log(
+          "Response for VALIDATE_OTP_MAPPING returned from the security api:",
+          response
+        );
         if (response.ok) {
-          console.log(
-            "Response for VALIDATE_OTP_MAPPING returned from the security api:",
-            response
-          );
           return response;
         } else if (response.status === 401 || response.status === 404) {
           throw new Error("OTP Code is wrong");
